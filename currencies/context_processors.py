@@ -1,4 +1,5 @@
 from currencies.models import Currency
+from django.core import serializers
 
 
 def currencies(request):
@@ -9,7 +10,7 @@ def currencies(request):
             currency = Currency.objects.get(is_default__exact=True)
         except Currency.DoesNotExist:
             currency = None
-        request.session['currency'] = currency
+        request.session['currency'] = serializers.serialize("json", [currency])
 
     return {
         'CURRENCIES': currencies,
